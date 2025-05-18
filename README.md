@@ -2,10 +2,6 @@
 
 Ez egy Flask alapú webalkalmazás, amely lehetővé teszi a felhasználók számára, hogy különböző eseményeket (színház, mozi, koncert stb.) keressenek, megtekintsenek és később akár személyes listákba rendezzenek. Az alkalmazás mostantól támogatja a felhasználói regisztrációt, bejelentkezést és az eseményadatok adatbázis-alapú kezelését. Az azonos című események csoportosítva jelennek meg, és a filmposzterek is láthatók. A felhasználók létrehozhatnak, kezelhetnek és exportálhatnak saját eseménylistákat.
 
-```bash
-pip install -i https://test.pypi.org/simple/ MusorfigyeloApp
-```
-
 ## Jellemzők
 
 * Események adatbázis-alapú listázása és keresése (cím alapján csoportosítva).

@@ -1,0 +1,211 @@
+/* Globális stílusok vagy felülírások */
+body {
+    line-height: 1.6;
+    font-family: 'Inter', sans-serif;
+}
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+::-webkit-scrollbar-thumb { background: #888; border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+.flash-message-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1050;
+    width: auto;
+    max-width: 90%;
+}
+@media (min-width: 640px) {
+    .flash-message-container {
+        max-width: 350px;
+    }
+}
+.event-card-new {
+    display: flex;
+    flex-direction: row-reverse;
+    overflow: hidden;
+}
+.event-card-new-details {
+    flex-grow: 1;
+}
+.event-card-new-poster-container {
+    width: 33.333333%;
+    flex-shrink: 0;
+    height: auto;
+    max-height: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f3f4f6;
+    border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+.event-card-new-poster {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+ .event-detail-img-container {
+     max-height: calc(100vh - 7rem); /* Navigáció + top offset */
+     overflow: hidden;
+}
+.event-detail-img {
+    width: 100%;
+    height: auto;
+    max-height: calc(100vh - 7rem); /* Igazodik a konténerhez */
+    object-fit: contain;
+    border-radius: 0.5rem;
+}
+
+/* Navigációs sáv egyedi stílusai */
+.site-title {
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.nav-link {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover {
+    border-bottom-color: #67e8f9; /* Tailwind cyan-300 */
+}
+
+/* Gombok általános stílusa (Tailwind mellett) */
+.primary-button {
+    box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+}
+
+.primary-button:active {
+    /* Gomb lenyomásának effektje */
+    transform: translateY(1px) scale(0.98);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Esemény kártyák egyedi stílusai */
+.event-card {}
+
+.event-card:hover {
+    border-color: #818cf8; /* Tailwind indigo-400 */
+}
+
+.event-title {
+    font-size: 1.20rem;
+}
+
+.event-price {
+    font-weight: 700; /* Tailwind 'font-bold' */
+}
+
+/* Főcímek stílusa az oldalakon */
+.page-main-title {
+    border-bottom: 2px solid #93c5fd; /* Tailwind blue-300 */
+    padding-bottom: 0.75rem;
+}
+
+/* Szakaszcímek stílusa */
+.section-title {
+    border-bottom: 1px solid #e5e7eb; /* Tailwind gray-200 */
+    padding-bottom: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+/* Lábléc egyedi stílusai */
+.site-footer {
+    border-top: 2px solid #374151; /* Tailwind gray-700, vastagabb vonal */
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+
+/* Képek helyőrzője */
+.event-image-placeholder {
+    background-color: #f3f4f6; /* Tailwind gray-100 */
+    border: 2px dashed #d1d5db; /* Tailwind gray-300 */
+    color: #6b7280; /* Tailwind gray-500 */
+}
+
+/* Autentikációs űrlapok konténere */
+.auth-form-container {}
+
+.form-input:focus {
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2); /* Alternatív fókusz stílus */
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+    color: #4338ca; /* Tailwind indigo-700 */
+}
+
+/* Egyéb segédosztályok*/
+.visually-hidden { /* Képernyőolvasók számára látható, de vizuálisan rejtett */
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
+
+/* Print stílusok */
+@media print {
+    body {
+        font-family: 'Times New Roman', Times, serif;
+        background-color: white !important; /* Fontos, hogy felülírja a Tailwindet */
+        color: black !important;
+        line-height: 1.4;
+    }
+    nav, footer, button, .back-button, .details-button { /* Gombokat és felesleges linkeket is elrejtjük */
+        display: none !important;
+    }
+    .booking-button { /* Jegyvásárlás link szövege és célja maradjon */
+        background-color: transparent !important;
+        color: black !important;
+        text-decoration: none !important;
+        border: 1px solid black !important;
+        padding: 4px 8px !important;
+        box-shadow: none !important;
+    }
+    .booking-button::after {
+        content: " (URL: " attr(href) ")"; /* Kiírja az URL-t a link mellé */
+        font-size: 0.8em;
+    }
+
+    .event-card {
+        box-shadow: none !important;
+        border: 1px solid #ccc !important;
+        page-break-inside: avoid; /* Kerülje a kártya kettétörését oldalak között */
+        margin-bottom: 1cm;
+    }
+    .event-description {
+        height: auto !important; /* Teljes leírás megjelenítése nyomtatásban */
+        overflow: visible !important;
+    }
+    .page-main-title {
+        color: black !important; /* Gradiens helyett fekete */
+        background: none !important;
+        border-bottom: 2px solid black !important;
+        text-align: left !important;
+    }
+    .section-title {
+        border-bottom: 1px solid #666 !important;
+        color: black !important;
+    }
+    .event-price {
+        color: black !important;
+    }
+    .container { /* Nyomtatásban ne legyen maximális szélesség */
+        max-width: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    /* Táblázatosabb elrendezés eseményeknek nyomtatásban (opcionális) */
+    .grid {
+        display: block !important; /* Grid helyett blokk elemek egymás alatt */
+    }
+}

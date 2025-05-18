@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="bg-white shadow-xl rounded-lg p-6 sm:p-8">
+    <a href="{{ request.referrer or url_for('index') }}" class="mb-6 inline-block bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-150 ease-in-out back-button">
+        &larr; Vissza
+    </a>
+
+    <h1 class="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600 mb-4 page-main-title">{{ event.title }}</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+        <div class="md:col-span-1">
+            {% if event.poster_url %}
+            <div class="event-detail-img-container rounded-lg shadow-lg">
+                <img src="{{ event.poster_url }}" alt="Poszter: {{ event.title }}" class="event-detail-img"
+                     onerror="this.onerror=null; this.src='https://placehold.co/400x600/E2E8F0/4A5568?text=Poszter+nem+elérhető'; this.alt='Helyettesítő kép: Poszter nem elérhető'">
+            </div>
+            {% else %}
+            <div class="event-detail-img-container bg-gray-200 rounded-lg h-64 flex items-center justify-center">
+                <span class="text-gray-500">[Nincs poszter]</span>
+            </div>
+            {% endif %}
+        </div>
+        <div class="md:col-span-2">
+            {% if event.description %}
+            <p class="text-lg text-gray-700 mb-4">{{ event.description }}</p>
+            {% endif %}
+            <div class="space-y-2 text-gray-600">
+                <p><strong class="font-medium text-gray-800">Típus:</strong> {{ event.event_type }}</p>
+                <p><strong class="font-medium text-gray-800">Helyszín:</strong> {{ event.venue }}</p>
+                <p><strong class="font-medium text-gray-800">Város:</strong> {{ event.city }}</p>
+                <p><strong class="font-medium text-gray-800">Dátum:</strong> {{ event.date }}</p>
+                <p><strong class="font-medium text-gray-800">Időpont:</strong> {{ event.time }}</p>
+                {% if event.price is not none %}
+                <p class="text-2xl font-bold text-green-600 mt-4 event-price">{{ "{:,.0f} Ft".format(event.price).replace(",", " ") }}</p>
+                {% else %}
+                <p class="text-2xl font-bold text-gray-500 mt-4 event-price">Ár nem elérhető</p>
+                {% endif %}
+                 <p class="text-sm text-gray-500 mt-2"><span class="font-medium">Forrás:</span> {{ event.source }}</p>
+            </div>
+             <div class="mt-8 flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 button-container">
+                {% if event.booking_url %}
+                <a href="{{ event.booking_url }}" target="_blank" class="w-full sm:w-auto text-center bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-6 rounded-lg shadow-md transition duration-150 ease-in-out transform hover:scale-105 primary-button booking-button">
+                    Jegyvásárlás
+                </a>
+                {% endif %}
+                {% if current_user.is_authenticated %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

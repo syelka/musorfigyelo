@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="bg-white shadow-xl rounded-lg p-6 sm:p-8">
+    <h1 class="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600 mb-8 page-main-title">Irányítópult</h1>
+
+    <p class="text-lg text-gray-700 mb-4">
+        Üdvözöllek, <strong class="font-semibold">{{ current_user.fullname }}</strong>!
+    </p>
+    <p class="text-gray-600 mb-6">
+        Ez a te személyes irányítópultod. Itt jelenhetnének meg a mentett eseményeid, listáid vagy egyéb felhasználói beállítások.
+    </p>
+    {% if current_user.email == 'admin@example.com' %}
+    <div class="mb-6 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
+        <p class="font-bold">Adminisztrátori funkciók</p>
+        <p>Az események adatbázisának frissítéséhez kattints a navigációs sávban az "Adatok Frissítése" gombra.</p>
+    </div>
+    {% endif %}
+
+    <div class="mt-8">
+        <h2 class="text-2xl font-semibold text-gray-700 mb-4 section-title">Gyorsmenü</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <a href="{{ url_for('index') }}" class="block p-6 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg shadow-md transition-colors">
+                <h3 class="text-xl font-semibold mb-2">Főoldal</h3>
+                <p class="text-indigo-100">Böngéssz az aktuális események között.</p>
+            </a>
+            <a href="{{ url_for('my_lists') }}" class="block p-6 bg-sky-500 hover:bg-sky-600 text-white rounded-lg shadow-md transition-colors">
+                <h3 class="text-xl font-semibold mb-2">Listáim</h3>
+                <p class="text-sky-100">Tekintsd meg és kezeld a mentett listáidat.</p>
+            </a>
+            <div class="block p-6 bg-gray-200 text-gray-700 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-2">Profil Szerkesztése (Hamarosan)</h3>
+                <p class="text-gray-600">Módosítsd a felhasználói adataidat.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="bg-white shadow-xl rounded-lg p-6 sm:p-8">
+    <a href="{{ request.referrer or url_for('index') }}" class="mb-6 inline-block bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-150 ease-in-out back-button md:sticky md:top-20 lg:md:top-24 self-start">
+        &larr; Vissza
+    </a>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-6">
+        <div class="md:col-span-1 md:sticky md:top-20 lg:md:top-40 self-start">
+            {% if poster_url %}
+            <div class="event-detail-img-container rounded-lg shadow-lg">
+                <img src="{{ poster_url }}" alt="Poszter: {{ film_title }}" class="event-detail-img"
+                     onerror="this.onerror=null; this.src='https://placehold.co/400x600/E2E8F0/4A5568?text=Poszter+nem+elérhető'; this.alt='Helyettesítő kép: Poszter nem elérhető'">
+            </div>
+            {% else %}
+            <div class="event-detail-img-container bg-gray-200 rounded-lg h-64 md:h-[500px] flex items-center justify-center">
+                <span class="text-gray-500 p-4 text-center">[Nincs poszter ehhez az eseményhez]</span>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="md:col-span-2">
+            <h1 class="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600 mb-4 page-main-title">{{ film_title }}</h1>
+            {% if description %}
+            <p class="text-lg text-gray-700 mb-6">{{ description }}</p>
+            {% endif %}
+
+            {% if current_user.is_authenticated %}
+            <form method="POST" action="{{ url_for('film_detail_grouped', event_title_slug=event_title_slug) }}" class="mb-6 p-4 bg-sky-50 rounded-lg shadow">
+                {{ add_to_list_form.hidden_tag() }}
+                <h3 class="text-lg font-semibold text-sky-700 mb-2">Hozzáadás listához:</h3>
+                <div class="flex flex-col sm:flex-row sm:items-end gap-3">
+                    <div class="flex-grow">
+                        {{ add_to_list_form.user_list.label(class="block text-sm font-medium text-gray-700 mb-1") }}
+                        {{ add_to_list_form.user_list(class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm") }}
+                    </div>
+                    <div class="sm:w-px sm:h-10 bg-gray-300 hidden sm:block self-center"></div>
+                    <div class="flex-grow">
+                        {{ add_to_list_form.new_list_name.label(class="block text-sm font-medium text-gray-700 mb-1") }}
+                        {{ add_to_list_form.new_list_name(class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder="Pl. Kedvencek") }}
+                    </div>
+                    {{ add_to_list_form.submit_add(class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-150 ease-in-out transform hover:scale-105 whitespace-nowrap") }}
+                </div>
+                {% if add_to_list_form.user_list.errors %}
+                    {% for error in add_to_list_form.user_list.errors %}
+                        <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+                {% if add_to_list_form.new_list_name.errors %}
+                    {% for error in add_to_list_form.new_list_name.errors %}
+                        <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                    {% endfor %}
+                {% endif %}
+            </form>
+            {% else %}
+            <p class="mb-6 p-4 bg-sky-50 rounded-lg shadow text-sm text-sky-700">
+                A listához adáshoz <a href="{{ url_for('login', next=request.url) }}" class="font-semibold underline hover:text-sky-600">jelentkezz be</a> vagy <a href="{{ url_for('register') }}" class="font-semibold underline hover:text-sky-600">regisztrálj</a>!
+            </p>
+            {% endif %}
+            
+            <h2 class="text-2xl font-semibold text-gray-700 mt-8 mb-4 section-title">Elérhető Előadások/Vetítések:</h2>
+            {% if venues_data %}
+                <div class="space-y-6">
+                    {% for venue_info in venues_data | sort(attribute='venue_name') %}
+                        <div class="p-4 border border-gray-200 rounded-lg shadow-sm">
+                            <h3 class="text-xl font-semibold text-indigo-700">{{ venue_info.venue_name }} <span class="text-gray-500 text-base">({{ venue_info.city_name }})</span></h3>
+                            {% for date, times in venue_info.showings_by_date.items() %}
+                                <div class="mt-3">
+                                    <p class="text-md font-medium text-gray-800">{{ date }}</p>
+                                    <div class="flex flex-wrap gap-2 mt-1">
+                                        {% for time_info in times %}
+                                            {% if time_info.booking_url %}
+                                                <a href="{{ time_info.booking_url }}" target="_blank" class="bg-green-500 hover:bg-green-600 text-white text-sm font-medium py-1 px-3 rounded-md transition-colors">
+                                                    {{ time_info.time }}
+                                                </a>
+                                            {% else %}
+                                                <span class="bg-gray-300 text-gray-700 text-sm font-medium py-1 px-3 rounded-md">
+                                                    {{ time_info.time }}
+                                                </span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <p class="text-gray-600">Jelenleg nincsenek elérhető időpontok ehhez az eseményhez.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

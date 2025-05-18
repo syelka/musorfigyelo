@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title if page_title else "Műsorfigyelő" }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-gray-100 text-gray-800 flex flex-col min-h-screen">
+    <nav class="bg-gradient-to-r from-sky-500 to-indigo-600 text-white shadow-md sticky top-0 z-50 h-16 flex items-center">
+        <div class="container mx-auto px-6 flex justify-between items-center">
+            <a href="{{ url_for('index') }}" class="text-2xl font-bold hover:text-sky-200 transition duration-300 site-title">Műsorfigyelő</a>
+            <div class="space-x-2 sm:space-x-4">
+                <a href="{{ url_for('index') }}" class="nav-link hover:text-sky-200 transition duration-300 px-2 sm:px-3 py-2 rounded-md text-sm sm:text-base">Főoldal</a>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('my_lists') }}" class="nav-link hover:text-sky-200 transition duration-300 px-2 sm:px-3 py-2 rounded-md text-sm sm:text-base">Listáim</a>
+                    <a href="{{ url_for('dashboard') }}" class="nav-link hover:text-sky-200 transition duration-300 px-2 sm:px-3 py-2 rounded-md text-sm sm:text-base">Irányítópult</a>
+                    {% if current_user.email == 'admin@example.com' %}
+                        <a href="{{ url_for('update_events_from_scrapers') }}" class="nav-link bg-sky-500 hover:bg-sky-500 transition duration-300 px-2 sm:px-3 py-2 rounded-md text-sm sm:text-base">Adatok Frissítése</a>
+                    {% endif %}
+                    <a href="{{ url_for('logout') }}" class="nav-link hover:text-sky-200 transition duration-300 px-2 sm:px-3 py-2 rounded-md text-sm sm:text-base">Kijelentkezés</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="nav-link hover:text-sky-200 transition duration-300 px-2 sm:px-3 py-2 rounded-md text-sm sm:text-base">Bejelentkezés</a>
+                    <a href="{{ url_for('register') }}" class="nav-link hover:text-sky-200 transition duration-300 px-2 sm:px-3 py-2 rounded-md text-sm sm:text-base">Regisztráció</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <div class="flash-message-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="p-4 mb-2 text-sm rounded-lg shadow-lg
+                        {% if category == 'danger' %} bg-red-100 border border-red-400 text-red-700
+                        {% elif category == 'success' %} bg-green-100 border border-green-400 text-green-700
+                        {% elif category == 'info' %} bg-blue-100 border border-blue-400 text-blue-700
+                        {% else %} bg-yellow-100 border border-yellow-400 text-yellow-700
+                        {% endif %}" role="alert">
+                        <span class="font-medium">
+                            {% if category == 'danger' %}Hiba!
+                            {% elif category == 'success' %}Siker!
+                            {% elif category == 'info' %}Információ:
+                            {% else %}Figyelem:
+                            {% endif %}
+                        </span> {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow mt-5">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="bg-gray-800 text-white text-center p-6 site-footer">
+        <p>&copy; {{ current_year }} Műsorfigyelő Alkalmazás. Minden jog fenntartva.</p>
+        <p class="text-sm text-gray-400">Készítette: Egy lelkes fejlesztő</p>
+    </footer>
+</body>
+</html>

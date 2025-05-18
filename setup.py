@@ -1,0 +1,47 @@
+from setuptools import setup, find_packages
+
+setup(
+    name='MusorfigyeloApp',
+    version='0.1.0',
+    author='Czékmán Hunor',
+    author_email='czekmanhunor@gmail.com',
+    description='Flask webalkalmazás műsorok figyelésére és listákba rendezésére.',
+    long_description=open('README.md', encoding='utf-8').read(),
+    long_description_content_type='text/markdown',
+    url='https://github.com/syelka/musorfigyelo',
+    packages=find_packages(),
+    py_modules=['app', 'scrapers'],
+    include_package_data=True,
+    zip_safe=False,
+    install_requires=[
+        'Flask>=2.0',
+        'Flask-SQLAlchemy>=2.5',
+        'Flask-WTF>=1.0',
+        'Flask-Login>=0.5',
+        'werkzeug>=2.0',
+        'email_validator>=1.1',
+        'requests>=2.25',
+        'beautifulsoup4>=4.9',
+        'ics>=0.7',
+        'fpdf2>=2.7.4',
+    ],
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: End Users/Desktop',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
+        'Framework :: Flask',
+        'Operating System :: OS Independent',
+        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+        'Topic :: Multimedia :: Video :: Display',
+    ],
+    python_requires='>=3.7',
+    entry_points={
+        'console_scripts': [],
+    }
+)

@@ -1,0 +1,54 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="max-w-md mx-auto bg-white shadow-xl rounded-lg p-8 mt-10 auth-form-container">
+    <h1 class="text-2xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600 mb-8 page-main-title">Regisztráció</h1>
+    <form method="POST" action="{{ url_for('register') }}" novalidate>
+        {{ form.hidden_tag() }} <div class="mb-4">
+            {{ form.fullname.label(class="block text-sm font-medium text-gray-700") }}
+            {{ form.fullname(class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm form-input", placeholder="Minta János") }}
+            {% if form.fullname.errors %}
+                {% for error in form.fullname.errors %}
+                    <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="mb-4">
+            {{ form.email.label(class="block text-sm font-medium text-gray-700") }}
+            {{ form.email(class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm form-input", placeholder="nev@example.com") }}
+            {% if form.email.errors %}
+                {% for error in form.email.errors %}
+                    <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="mb-4">
+            {{ form.password.label(class="block text-sm font-medium text-gray-700") }}
+            {{ form.password(class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm form-input", placeholder="Minimum 6 karakter") }}
+            {% if form.password.errors %}
+                {% for error in form.password.errors %}
+                    <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        <div class="mb-6">
+            {{ form.confirm_password.label(class="block text-sm font-medium text-gray-700") }}
+            {{ form.confirm_password(class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm form-input", placeholder="Jelszó újra") }}
+            {% if form.confirm_password.errors %}
+                {% for error in form.confirm_password.errors %}
+                    <p class="text-red-500 text-xs italic mt-1">{{ error }}</p>
+                {% endfor %}
+            {% endif %}
+        </div>
+
+        {{ form.submit(class="w-full bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-150 ease-in-out transform hover:scale-105 primary-button") }}
+
+        <p class="text-center text-sm text-gray-600 mt-6">
+            Már van fiókod? <a href="{{ url_for('login') }}" class="font-medium text-indigo-600 hover:text-indigo-500 auth-link">Jelentkezz be!</a>
+        </p>
+    </form>
+</div>
+{% endblock %}

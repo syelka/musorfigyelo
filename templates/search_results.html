@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="bg-white shadow-xl rounded-lg p-6 sm:p-8">
+    <h1 class="text-3xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-indigo-600 mb-8 page-main-title">Keresési Eredmények</h1>
+
+    <div class="mb-6 p-4 bg-gray-50 rounded-lg shadow">
+        <p class="text-gray-700">Keresési feltételek:</p>
+        <ul class="list-disc list-inside ml-4 text-gray-600">
+            {% if query %}<li>Kulcsszó: <span class="font-semibold">{{ query }}</span></li>{% endif %}
+            {% if city %}<li>Város: <span class="font-semibold">{{ city }}</span></li>{% endif %}
+            {% if not query and not city %}<li>Nincsenek megadva szűrési feltételek.</li>{% endif %}
+        </ul>
+    </div>
+
+    <a href="{{ url_for('index') }}" class="mb-6 inline-block bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-600 hover:to-indigo-700 text-white font-semibold py-2 px-4 rounded-md shadow-md transition duration-150 ease-in-out back-button">
+        &larr; Vissza a főoldalra és új keresés
+    </a>
+
+    {% if event_groups %}
+        <h2 class="text-2xl font-semibold text-gray-700 mb-6 section-title">Találatok ({{ event_groups|length }} egyedi cím):</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+            {% for group in event_groups %}
+            {% set event = group.representative_event %}
+            <div class="event-card-new bg-white border border-gray-200 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
+                <div class="event-card-new-details p-5 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl lg:text-2xl font-semibold text-indigo-600 mb-2 event-title">{{ event.title }}</h3>
+                        <p class="text-sm text-gray-500 mb-1"><span class="font-medium">Típus:</span> {{ event.event_type }}</p>
+                        <p class="text-sm text-gray-500 mb-1">
+                            <span class="font-medium">Elérhető:</span>
+                            {% if event.event_type == 'Mozi' %} Több helyszínen és időpontban {% else %} {{ event.venue }}, {{ event.city }} {% endif %}
+                        </p>
+                        {% if event.description %}
+                        <p class="text-gray-600 text-sm mt-2 mb-3 event-description max-h-20 overflow-y-auto">{{ event.description | truncate(150, True) }}</p>
+                        {% endif %}
+                    </div>
+                    <div class="mt-auto pt-3">
+                         <a href="{{ url_for('film_detail_grouped', event_title_slug=group.slug) }}" class="inline-block text-sm bg-indigo-500 hover:bg-indigo-600 text-white font-medium py-2 px-4 rounded-md transition duration-150 ease-in-out details-button">
+                            Részletek és Vetítések/Előadások
+                         </a>
+                    </div>
+                </div>
+                <div class="event-card-new-poster-container bg-gray-100">
+                    {% if event.poster_url %}
+                        <img src="{{ event.poster_url }}" alt="Poszter: {{ event.title }}" class="event-card-new-poster"
+                             onerror="this.onerror=null; this.src='https://placehold.co/300x450/E2E8F0/4A5568?text=Poszter'; this.alt='Helyettesítő kép';">
+                    {% else %}
+                        <div class="w-full h-full flex items-center justify-center bg-gray-200 rounded-r-lg">
+                            <span class="text-gray-500 text-sm p-2 text-center">Nincs poszter</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-gray-600 text-lg">Nem található esemény a megadott feltételekkel.</p>
+    {% endif %}
+</div>
+{% endblock %}
